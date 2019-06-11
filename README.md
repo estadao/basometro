@@ -55,6 +55,10 @@ O programa vai pegar todas as votações transcorridas entre o último registros
 
 De novo: paciência, demora um pouco.
 
+#### Visualização
+
+Os arquivos que geram os gráficos apresentados na ferramenta estão disponíveis no diretório `viz`. Eles foram feitos usando o pacote `d3.js` V4. Para excutá-los na sua máquina, será preciso inicializar um servidor local e chamar as funções a partir de um arquivo HTML. 
+
 #### Coisas técnicas
 
 Todo o processo de coleta e análise de dados é feito pelos arquivos contidos no diretório `basometro`. Em suma, eles fazem requisições para a API da Câmara e calculam quantas vezes cada deputado votou de acordo com a orientação do líder do governo ou contra ela. Outras operações envolvem agregar os dados por partido e computar uma linha do tempo mensal.
