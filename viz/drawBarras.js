@@ -67,8 +67,8 @@ function drawBarras(entity, scaleType, targetDiv) {
       datapoints[i].dataInicio = datapoints[i].dataInicio.replace(" ", "T");
       datapoints[i].dataFim    = datapoints[i].dataFim.replace(" ", "T");
 
-      datapoints[i].dataInicio += "Z";
-      datapoints[i].dataFim    += "Z";
+      datapoints[i].dataInicio += "-03:00";
+      datapoints[i].dataFim    += "-03:00";
 
     }
 
