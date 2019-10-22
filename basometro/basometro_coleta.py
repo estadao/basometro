@@ -1,6 +1,6 @@
 '''
 As funções desse módulo usam o camaraPy, wrapper para a API original das Câmara
-dos Deputados desenvolvida pelo Estadão, para acesar o resultado das votações
+dos Deputados desenvolvido pelo Estadão, para acesar o resultado das votações
 de todas as proposições que tiveram votação nominal e estão registradas nos
 sistemas do Congresso.
 '''
