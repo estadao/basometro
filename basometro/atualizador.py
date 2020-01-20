@@ -61,8 +61,8 @@ def atualizar_basometro():
   #########################################
 
   # Database
-  df_path              = "database/basometro.csv"
-  df_backup_path       = "database/basometro-backup.csv"
+  df_path              = "./database/basometro.csv"
+  df_backup_path       = "./database/basometro-backup.csv"
 
   # Viz
   output_path      = "./output"
@@ -75,11 +75,21 @@ def atualizar_basometro():
 
   print("Atualizando o Basômetro e as visualizações de dados.")
 
+  print("Iniciando backup")
   fazer_backup_database(df_path, df_backup_path)
-  atualizar_database(df_path, df_backup_path)
+  print("Backup pronto")
 
+  print("Atualizando database")
+  atualizar_database(df_path, df_backup_path)
+  print("Atualização do database pronta")
+
+  print("Fazendo backup de viz")
   fazer_backup_viz(output_path, backup_path)
+  print("Backup de viz pronto")
+
+  print("Atualizando viz")
   atualizar_viz(df_path, temp_path, output_path, backup_path)
+  print("Atualização de viz pronta")
 
   assert os.path.exists(output_path)
   assert not os.path.exists(temp_path)

@@ -111,7 +111,7 @@ def atualizar_banco_de_dados(df_path, keep_all = False):
 
           for votacao in votacoes:
 
-            # Essa checagem é necessária para não pegar todas as votações
+            # Essachecagem é necessária para não pegar todas as votações
             # de uma proposição que apareceu no plenário em mais de um ano
             data_votacao = pd.to_datetime(votacao["@Data"], format = "%d/%m/%Y")
             if data_votacao > latest_entry:
@@ -146,6 +146,10 @@ def atualizar_banco_de_dados(df_path, keep_all = False):
     # Caso aconteça uma virada de ano entre a data do último voto
     # e a data de requisição, vamos precisar fazer uma solicitação
     # a mais para evitar perder dados.
+
+    print("Extraindo novos votos")
+
+
     if latest_entry.year != today.year:
       years = [ latest_entry.year, today.year ]
 
@@ -153,15 +157,34 @@ def atualizar_banco_de_dados(df_path, keep_all = False):
       years = [ today.year ]
 
     votes_arr = [ ]
+
+    print("Extraindo votos dos anos:", years)
+
     for year in years:
 
-      # Faz requisição para a API, recuperando as votações do ano atual
-      props = proposicoes.ListarProposicoesVotadasEmPlenario( { "Ano" : today.year } )
-      props = props['proposicoes']['proposicao']
+      print("Olhando para o ano:", year)
+
+      # Certifica-se de que há votações no ano. Isso é necessário porque, 
+      # caso o atualizador rode antes da 1º votação de um novo ano, a API
+      # retornará um erro.
+
+      try:
+
+        # Faz requisição para a API, recuperando as votações do ano atual
+        props = proposicoes.ListarProposicoesVotadasEmPlenario( { "Ano" : year } )
+        props = props['proposicoes']['proposicao']
+
+      except custom_exceptions.SemDados as e:
+        # Se não há dados, prossiga para o próximo ano
+        print("O ano", year, "está zoado")
+        continue
 
       for prop in props:
 
+        print("Looking at prop", prop)
+
         if pd.to_datetime( prop [ "dataVotacao" ], format = "%d/%m/%Y") > latest_entry:
+          print("Fetching vote on", prop["dataVotacao"])
           new_votes = extrair_dados_proposicao(prop, latest_entry)
           votes_arr.extend(new_votes)
 
@@ -176,8 +199,10 @@ def atualizar_banco_de_dados(df_path, keep_all = False):
 
   # Pega os intervalos de data
   latest_entry, today = selecionar_intervalo_de_datas(df)
+  print("Latest entry:", latest_entry, "Today:", today)
 
   # Obtém as votações que transcorreram desde a última data adicionada
+  print("Fetching new votes")
   new_votes = extrair_novos_votos(latest_entry, today)
 
   # Transforma em dataframe

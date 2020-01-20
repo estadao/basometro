@@ -1,2 +1,2 @@
-camaraPy==0.0.3
+camaraPy==0.0.5
 pandas==0.20.3
